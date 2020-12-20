@@ -23,6 +23,12 @@ void MyEnvironmentTriangle::SetPosition(float x, float y)
 	this->inner_triangle->SetPosition(this->x, this->y);
 }
 
+void MyEnvironmentTriangle::changeColor(Color color)
+{
+	this->color_outer = color;
+	this->outer_triangle->changeColor(this->color_outer);
+}
+
 void MyEnvironmentTriangle::DRAW(RenderWindow* WINDOW)
 {
 	this->outer_triangle->DRAW(WINDOW);

@@ -4,6 +4,8 @@
 //***********************************constructors
 MyCircle::MyCircle(float radius, Color color)
 {
+	this->x = 0;
+	this->y = 0;
 	this->radius = radius;
 	this->color = color;
 	this->circle = new CircleShape(this->radius);
@@ -42,5 +44,5 @@ void MyCircle::Move(float x, float y)
 
 void MyCircle::DRAW(RenderWindow* WINDOW)
 {
-	WINDOW->draw(*circle);
+	WINDOW->draw(*this->circle);
 }

@@ -14,6 +14,7 @@ public:
 	MyEnvironmentCircle(float radius, Color color_inner, Color color_outer);
 	~MyEnvironmentCircle();
 	void SetPosition(float x, float y);
+	void changeColor(Color color);
 	void DRAW(RenderWindow* WINDOW);
 };
 

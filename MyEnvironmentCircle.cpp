@@ -23,6 +23,12 @@ void MyEnvironmentCircle::SetPosition(float x, float y)
 	this->inner_circle->SetPosition(this->x, this->y);
 }
 
+void MyEnvironmentCircle::changeColor(Color color)
+{
+	this->color_outer = color;
+	this->outer_circle->changeColor(this->color_outer);
+}
+
 void MyEnvironmentCircle::DRAW(RenderWindow* WINDOW)
 {
 	this->outer_circle->DRAW(WINDOW);

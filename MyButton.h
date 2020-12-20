@@ -16,5 +16,7 @@ public:
 	~MyButton();
 	void SetPosition(float x, float y);
 	void DRAW(RenderWindow* WINDOW);
+	std::function<bool(int, int)> fcn;
+	//(void) (*onclick)(MyCharacter* _char);
 };
 

@@ -7,15 +7,17 @@
 void MyGame::InitVariables()
 {
 	this->window = nullptr;
-
-	int points;
-	float enemySpawnTimer;
-	float enemySpawnTimerMax;
-	int maxEnemies;
-	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
 	this->maxEnemies = 5;
+
+	
+	this->gap_between_environment_elements = 170;
+	this->size_of_environment_elements = 80;
+	this->padding = 85;
+	this->background_color = new Color(0,0,0);
+	this->objects_color = new Color(163, 73, 164);
+	this->rows_of_env_elem = 3;
 }
 void MyGame::InitWindow()
 {
@@ -38,6 +40,8 @@ MyGame::MyGame()
 {
 	this->InitVariables();
 	this->InitWindow();
+	this->initCircle();
+	this->initTriangle();
 	this->initEnemies();
 }
 MyGame::~MyGame() 
@@ -154,6 +158,8 @@ void MyGame::uppdate()
 {
 	this->pollEvents();
 	this->uppdateMousePositions();
+	this->initCircles();
+	this->initTriangles();
 	this->uppdateEnemies();
 	//update mouse position
 	//relative to the screen
@@ -172,7 +178,71 @@ void MyGame::render()
 	this->window->clear(Color(126, 40, 127, 255));
 	
 	//draw here
+	this->draw_circles();
+	this->draw_triangles();
 	this->renderEnemies();
 
 	this->window->display();
+}
+
+void MyGame::initTriangle()
+{
+	this->tr = new MyEnvironmentTriangle(80.f, *this->background_color, *this->objects_color);
+}
+void MyGame::initTriangles()
+{
+	for (int i = 0; i < pow(this->rows_of_env_elem, 2); i++) {
+		int c = 0;
+		int r = 0;
+		c = ceil(i / this->rows_of_env_elem);
+		c % 2 ? r = 1 : r = 0;
+		float xpos;
+		float ypos;
+		xpos = this->padding + r * (this->gap_between_environment_elements + this->size_of_environment_elements) + (i % this->rows_of_env_elem) * (this->gap_between_environment_elements + this->size_of_environment_elements);
+		ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements);
+		this->tr->SetPosition(xpos, ypos);
+		this->tr->changeColor(*this->objects_color);
+		this->environment_triangles.insert(this->environment_triangles.end(), *this->tr);
+	}
+	//delete this->tr;
+}
+
+void MyGame::draw_triangles()
+{
+	for(auto & t : this->environment_triangles) {
+		t.DRAW(this->window);
+	}
+}
+
+void MyGame::initCircle()
+{
+	this->cir = new MyEnvironmentCircle(80.f, *this->background_color, *this->objects_color);
+}
+
+void MyGame::initCircles()
+{
+	
+	for (int i = 0; i < pow(this->rows_of_env_elem, 2); i++) {
+		int c = 0;
+		int r = 0;
+		c = ceil(i / this->rows_of_env_elem);
+		c % 2 ? r = 0 : r = 1;
+		float xpos;
+		float ypos;
+		xpos = this->padding + r * (this->gap_between_environment_elements + this->size_of_environment_elements) + (i % this->rows_of_env_elem) * (this->gap_between_environment_elements + this->size_of_environment_elements) + this->size_of_environment_elements;
+		ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements) + this->size_of_environment_elements;
+		this->cir = new MyEnvironmentCircle(80.f, *this->background_color, *this->objects_color);
+		this->cir->SetPosition(xpos, ypos);
+		this->cir->changeColor(*this->objects_color);
+		//ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements) + this->size_of_environment_elements;
+		this->environment_circles.insert(this->environment_circles.end(), *this->cir);
+	}
+}
+
+
+void MyGame::draw_circles()
+{
+	for (auto& t : this->environment_circles) {
+		t.DRAW(this->window);
+	}
 }

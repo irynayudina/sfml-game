@@ -16,6 +16,7 @@ public:
 	~MyTriangle();
 	//***********************************public function
 	void SetPosition(float x, float y);
+	void changeColor(Color color);
 	void DRAW(RenderWindow* WINDOW) override;
 };
 

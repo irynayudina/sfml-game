@@ -1,4 +1,6 @@
 #pragma once 
+#include <functional>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>

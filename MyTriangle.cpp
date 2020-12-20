@@ -20,6 +20,12 @@ void MyTriangle::SetPosition(float x, float y)
 	this->triangle->setPosition(this->x, this->y);
 }
 
+void MyTriangle::changeColor(Color color)
+{
+	this->color = color;
+	this->triangle->setFillColor(this->color);
+}
+
 void MyTriangle::DRAW(RenderWindow* WINDOW)
 {
 	WINDOW->draw(*triangle);
