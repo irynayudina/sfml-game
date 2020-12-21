@@ -134,8 +134,42 @@ void MyGame::uppdate()
 	this->initTriangles();
 	this->initColorButtons();
 	this->initControlButtons();
-	this->moveChar();
-	this->deformChar();
+	this->change_color_onclick();
+	this->start_onclick();
+	this->stop_onclick();
+	this->restart_onclick();
+	/*
+		if ((this->character->x > xcord) && (this->character->y > ycord)) {
+			while (!stopped) {
+
+				move1(xcord, ycord);
+			}
+		}
+	}
+
+	if ((this->character->x < xcord) && (this->character->y > ycord)) {
+		while(!stopped) {
+
+			move2(xcord, ycord);
+		}
+	}
+
+	if ((this->character->x < xcord) && (this->character->y < ycord)) {
+		while (!stopped) {
+			move3(xcord, ycord);
+		}
+	}
+
+	if ((this->character->x > xcord) && (this->character->y < ycord)) {
+		while (!stopped) {
+			move4(xcord, ycord);
+		}
+	}*/
+	if (!stopped) {
+
+		this->moveChar();
+		this->deformChar();
+	}
 	this->uppdateEnemies();////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	this->makeText();
 	this->makeText_color();
@@ -451,29 +485,168 @@ void MyGame::change_color_onclick()
 {
 	for (int i = 0; i < 5; i++) {
 		if (Mouse::isButtonPressed(Mouse::Left)) {
-			if (this->color_buttons->outer_rectangle->rectangle->getGlobalBounds().contains(this->mousePosView)) {
+			if (this->color_buttons[i].outer_rectangle->rectangle->getGlobalBounds().contains(this->mousePosView)) {
 				this->changeColor(this->color_buttons[i].getColor());
-				
-			}
-	}
 
-	
+			}
+		}
+
+	}
+}
+
+void MyGame::start_onclick()
+{
+	if (Mouse::isButtonPressed(Mouse::Left)) {
+		if (this->control_buttons[0].outer_rectangle->rectangle->getGlobalBounds().contains(this->mousePosView)) {
+			this->start();
+
+		}
+	}
+}
+
+void MyGame::stop_onclick()
+{
+	if (Mouse::isButtonPressed(Mouse::Left)) {
+		if (this->control_buttons[1].outer_rectangle->rectangle->getGlobalBounds().contains(this->mousePosView)) {
+			this->stop();
+
+		}
+	}
+}
+
+void MyGame::restart_onclick()
+{
+	if (Mouse::isButtonPressed(Mouse::Left)) {
+		if (this->control_buttons[2].outer_rectangle->rectangle->getGlobalBounds().contains(this->mousePosView)) {
+			this->restart();
+
+		}
+	}
 }
 
 void MyGame::init_main_char()
 {
 	character = new MyCharacter(40, 40, *this->objects_color);
-	character_reserved = this->character;
+	//character_reserved = new MyCharacter(0, 0, *this->objects_color);
+	//character_reserved->DeepCopy(*this->character);
+	//character_reserved->changeColor(Color(character_reserved->GetColor().r, character_reserved->GetColor().g, character_reserved->GetColor().b, 0));//to make it transparent
 }
 
 void MyGame::placeChar()
 {
 	character->SetPosition(200, 200);
 }
-
+//
 void MyGame::moveChar()
-{
+{/*
+	float xcord = 0;
+	float ycord = 0;
+	if (Mouse::isButtonPressed(Mouse::Left)) {
+		xcord = this->mousePosView.x;
+		ycord = this->mousePosView.y;
+		this->character->Move(xcord, ycord);
+		if (this->character->x < 0) {
+			this->character->SetPosition(this->window->getSize().x, ycord);
+		}
+		if (this->character->y <0) {
+			this->character->SetPosition(xcord, this->window->getSize().y);
+		}
+		if (this->character->x > this->window->getSize().x) {
+			this->character->SetPosition(0, ycord);
+		}
+		if (this->character->y > this->window->getSize().y) {
+			this->character->SetPosition(xcord, 0);
+		}
+
+	}*/
+	float xcord = 0;
+	float ycord = 0;
+	if (Mouse::isButtonPressed(Mouse::Left)) {
+		xcord = this->mousePosView.x;
+		ycord = this->mousePosView.y;
+		if ((this->character->x > xcord) && (this->character->y > ycord)) {
+			//while (!stopped) {
+
+			move1(xcord, ycord);
+			//}
+		}
+	}
+
+	if ((this->character->x < xcord) && (this->character->y > ycord)) {
+		//while (!stopped) {
+
+		move2(xcord, ycord);
+		//
+
+		if ((this->character->x < xcord) && (this->character->y < ycord)) {
+			//while (!stopped) {
+			move3(xcord, ycord);
+			//}
+		}
+
+		if ((this->character->x > xcord) && (this->character->y < ycord)) {
+			move4(xcord, ycord);
+		}
+	}
 }
+
+void MyGame::move4(float& xcord, float& ycord)
+{
+	//while (!stopped) {
+		this->character->Move((this->character->x - xcord)/20, -(ycord - this->character->y)/20);
+
+		if (this->character->x < 0) {
+			this->character->SetPosition(this->window->getSize().x, this->character->y);
+		}
+		if (this->character->y > this->window->getSize().y) {
+			this->character->SetPosition(this->character->x, 0);
+		}
+		/*xcord += xcord;
+		ycord += ycord;*/
+	//}
+}
+
+void MyGame::move3(float& xcord, float& ycord)
+{
+	this->character->Move((xcord - this->character->x) / 20, (ycord - this->character->y) / 20);
+	if (this->character->x > this->window->getSize().x) {
+		this->character->SetPosition(0, this->character->y);
+	}
+	if (this->character->y > this->window->getSize().y) {
+		this->character->SetPosition(this->character->x, 0);
+	}
+	/*xcord += xcord;
+	ycord += ycord;*/
+}
+
+void MyGame::move2(float& xcord, float& ycord)
+{
+	this->character->Move((xcord - this->character->x) / 20, -(this->character->y - ycord) / 20);
+	if (this->character->x > this->window->getSize().x) {
+		this->character->SetPosition(0, this->character->y);
+	}
+	if (this->character->y < 0) {
+		this->character->SetPosition(this->character->x, this->window->getSize().y);
+	}
+	/*xcord += xcord;
+	ycord += ycord;*/
+}
+
+void MyGame::move1(float& xcord, float& ycord)
+{
+	this->character->Move(-floor((this->character->x - xcord) / 20), -(this->character->y - ycord) / 20);
+
+
+	if (this->character->x < 0) {
+		this->character->SetPosition(this->window->getSize().x, this->character->y);
+	}
+	if (this->character->y < 0) {
+		this->character->SetPosition(this->character->x, this->window->getSize().y);
+	}
+	/*xcord += xcord;
+	ycord += ycord;*/
+}
+
 
 void MyGame::deformChar()
 {
@@ -486,7 +659,8 @@ void MyGame::drawChar()
 
 void MyGame::restart()
 {
-	this->character = this->character_reserved;
+	/*this->character_reserved->changeColor(Color(character_reserved->GetColor().r, character_reserved->GetColor().g, character_reserved->GetColor().b, 255));
+	this->character->DeepCopy(*this->character_reserved);*/
 }
 
 void MyGame::stop()

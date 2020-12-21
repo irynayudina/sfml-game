@@ -42,7 +42,23 @@ void MyCircle::Move(float x, float y)
 	this->y += y;
 }
 
+Color MyCircle::GetColor()
+{
+	return this->color;
+}
+
 void MyCircle::DRAW(RenderWindow* WINDOW)
 {
 	WINDOW->draw(*this->circle);
+}
+
+void MyCircle::DeepCopy(MyCircle* copied)
+{
+this->x = copied->x;
+this->y = copied->y;
+this->radius = copied->radius;
+this->color = copied->color;
+this->circle = new CircleShape(this->radius);
+this->circle->setFillColor(this->color);
+
 }

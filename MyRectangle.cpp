@@ -31,6 +31,23 @@ void MyRectangle::changeColor(Color color)
 	this->rectangle->setFillColor(this->color);
 }
 
+Color MyRectangle::GetColor()
+{
+	return this->color;
+}
+
+void MyRectangle::DeepCopy(MyRectangle* copied)
+{
+	this->x = copied->x;
+	this->y = copied->y;
+	this->height = copied->height;
+	this->width = copied->width;
+	this->color = copied->color;
+	this->rectangle = new RectangleShape(Vector2f(this->width, this->height));
+	this->rectangle->setFillColor(this->color);
+}
+
+
 void MyRectangle::changeSize(float width, float height)
 {
 	this->rectangle->setSize(Vector2f(width, height));

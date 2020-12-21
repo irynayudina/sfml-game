@@ -5,8 +5,7 @@ class MyCharacter
 {
 private:
 	//*********************************************variables
-	float x;
-	float y;
+	
 	float width;
 	float height;
 	Color color;
@@ -16,16 +15,21 @@ private:
 	MyRectangle* right;
 	
 public:
+	float x;
+	float y;
+
 	MyCircle* central_circle;
 	//*********************************************constructors
 	MyCharacter(float width, float height, Color color);
 	~MyCharacter();
 	//*********************************************public functions
 	void changeColor(Color color);
+	Color GetColor();
 	void SetPosition(float x, float y);//here
 	void Move(float x, float y);
 	void deform();//here///////////////////////////////////////////////////////////////////////////
-	void GetGlobalBounds();
+	void DeepCopy(MyCharacter ch);
+	
 	void DRAW(RenderWindow* WINDOW);
 };
 

@@ -21,6 +21,8 @@ public:
 	void changeColor(Color color);
 	void SetPosition(float x, float y);
 	void Move(float x, float y);
+	Color GetColor();
 	void DRAW(RenderWindow* WINDOW) override;
+	void DeepCopy(MyCircle* copied);
 };
 

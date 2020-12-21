@@ -20,6 +20,8 @@ public:
 	float getHeight();
 	//****************************************public functions
 	void changeColor(Color color);
+	Color GetColor();
+	void DeepCopy(MyRectangle* copied);
 	void changeSize(float width, float height);
 	void SetPosition(float x, float y);
 	void Move(float x, float y);

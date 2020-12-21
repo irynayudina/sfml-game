@@ -132,6 +132,10 @@ public:
 	void init_main_char();
 	void placeChar();
 	void moveChar();
+	void move4(float& xcord, float& ycord);
+	void move3(float& xcord, float& ycord);
+	void move2(float& xcord, float& ycord);
+	void move1(float& xcord, float& ycord);
 	void deformChar();
 	void drawChar();
 

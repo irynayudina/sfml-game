@@ -31,6 +31,11 @@ void MyCharacter::changeColor(Color color)
 	this->right->changeColor(this->color);
 }
 
+Color MyCharacter::GetColor()
+{
+	return this->color;
+}
+
 void MyCharacter::SetPosition(float x, float y)
 {
 	this->x = x;
@@ -57,6 +62,19 @@ void MyCharacter::Move(float x, float y)
 void MyCharacter::deform()
 {
 	this->left->Rotate(-45);
+}
+
+void MyCharacter::DeepCopy(MyCharacter ch)
+{
+	this->x = ch.x;
+	this->y = ch.y;
+	this->width = ch.width;
+	this->height = ch.height;
+	this->left->DeepCopy(ch.left);
+	this->centre->DeepCopy(ch.centre);
+	this->right->DeepCopy(ch.right);
+	this->central_circle->DeepCopy(ch.central_circle);
+
 }
 
 void MyCharacter::DRAW(RenderWindow* WINDOW)
