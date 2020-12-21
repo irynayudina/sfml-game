@@ -667,6 +667,7 @@ void MyGame::drawChar()
 
 void MyGame::restart()
 {
+	
 	window->close();
 }
 

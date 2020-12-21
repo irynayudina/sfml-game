@@ -1,7 +1,7 @@
 ﻿
 #include "MyGame.h"
 
-
+//bool game_removed = 0;
 int main()
 {
 
@@ -11,6 +11,7 @@ int main()
 
 	//init game
 	MyGame game;
+	
 	
 	//game loop
 	while (game.running())
