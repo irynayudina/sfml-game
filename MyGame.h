@@ -57,8 +57,9 @@ private:
 	MyButton control_buttons[3];
 	MyButton* controlb;
 	//***********************************************the main character objects
-	MyCharacter* charecter;
-
+	MyCharacter* character;
+	MyCharacter* character_reserved;
+	bool stopped = true;
 	//***********************************************general variables
 	int gap_between_environment_elements;//170
 	int size_of_environment_elements;//80
@@ -122,13 +123,22 @@ public:
 	void change_color_onclick();
 	void start_onclick();
 	void stop_onclick();
-	void restart_onclick();
+	void restart_onclick();//check if clicked and if clicked call restart
 
 
 
 
 //****************************************************************************************
-	void move_main_char();
+	void init_main_char();
+	void placeChar();
+	void moveChar();
+	void deformChar();
+	void drawChar();
 
+
+	void restart();
+	void stop();
+	void start();
+	void changeColor(Color col);
 };
 

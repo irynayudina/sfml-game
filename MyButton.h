@@ -4,7 +4,7 @@ class MyButton
 {
 private:
 	MyRectangle* inner_rectangle;
-	MyRectangle* outer_rectangle;
+	
 	float x;
 	float y;
 	float width;
@@ -12,6 +12,7 @@ private:
 	Color color_inner;
 	Color color_outer;
 public:
+	MyRectangle* outer_rectangle;
 	MyButton(float width, float height, Color color_outer, Color color_inner);
 	MyButton();
 	~MyButton();

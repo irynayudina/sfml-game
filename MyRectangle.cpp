@@ -52,6 +52,11 @@ void MyRectangle::Move(float x, float y)
 	this->y += y;
 }
 
+void MyRectangle::Rotate(int d)
+{
+	this->rectangle->rotate(d);
+}
+
 void MyRectangle::DRAW(RenderWindow* WINDOW)
 {
 	WINDOW->draw(*rectangle);

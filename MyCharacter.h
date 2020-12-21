@@ -11,12 +11,12 @@ private:
 	float height;
 	Color color;
 	//*********************************************body parts
-	MyRectangle* outer_rectangle;
-	MyRectangle* inner_rectangle;
-	MyRectangle* horizontal_line;
-	MyRectangle* vertical_line;
-	MyCircle* central_circle;
+	MyRectangle* left;
+	MyRectangle* centre;
+	MyRectangle* right;
+	
 public:
+	MyCircle* central_circle;
 	//*********************************************constructors
 	MyCharacter(float width, float height, Color color);
 	~MyCharacter();
@@ -25,6 +25,7 @@ public:
 	void SetPosition(float x, float y);//here
 	void Move(float x, float y);
 	void deform();//here///////////////////////////////////////////////////////////////////////////
+	void GetGlobalBounds();
 	void DRAW(RenderWindow* WINDOW);
 };
 

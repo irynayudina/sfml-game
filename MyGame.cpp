@@ -40,6 +40,8 @@ MyGame::MyGame()
 	this->initTriangle();
 	this->initColorButton();
 	this->initControlButton();
+	this->init_main_char();
+	this->placeChar();
 	this->initEnemies();
 }
 MyGame::~MyGame() 
@@ -102,11 +104,11 @@ void MyGame::uppdateEnemies()///////////////////////////////////////////////////
 	for (int i = 0; i < this->enemies.size(); i++){
 		bool deleted = false;
 		this->enemies[i].move(0.f, 5.f);
-		if (Mouse::isButtonPressed(Mouse::Left)) {
+		/*if (Mouse::isButtonPressed(Mouse::Left)) {
 			if (this->enemies[i].getGlobalBounds().contains(this->mousePosView)) {
 				this->enemies.erase(this->enemies.begin() + i);
 			}
-		}
+		}*/
 		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
 			deleted = true;
 		}
@@ -132,6 +134,8 @@ void MyGame::uppdate()
 	this->initTriangles();
 	this->initColorButtons();
 	this->initControlButtons();
+	this->moveChar();
+	this->deformChar();
 	this->uppdateEnemies();////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	this->makeText();
 	this->makeText_color();
@@ -143,6 +147,7 @@ void MyGame::render()
 	
 	this->draw_circles();
 	this->draw_triangles();
+	this->drawChar();
 	this->renderEnemies();///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	this->drawColorButtons();
 	this->drawControlButtons();
@@ -440,6 +445,63 @@ void MyGame::makeText_color()
 void MyGame::drawText_color()
 {
 	window->draw(text_color);
+}
+
+void MyGame::change_color_onclick()
+{
+	for (int i = 0; i < 5; i++) {
+		if (Mouse::isButtonPressed(Mouse::Left)) {
+			if (this->color_buttons->outer_rectangle->rectangle->getGlobalBounds().contains(this->mousePosView)) {
+				this->changeColor(this->color_buttons[i].getColor());
+				
+			}
+	}
+
+	
+}
+
+void MyGame::init_main_char()
+{
+	character = new MyCharacter(40, 40, *this->objects_color);
+	character_reserved = this->character;
+}
+
+void MyGame::placeChar()
+{
+	character->SetPosition(200, 200);
+}
+
+void MyGame::moveChar()
+{
+}
+
+void MyGame::deformChar()
+{
+}
+
+void MyGame::drawChar()
+{
+	this->character->DRAW(this->window);
+}
+
+void MyGame::restart()
+{
+	this->character = this->character_reserved;
+}
+
+void MyGame::stop()
+{
+	stopped = true;
+}
+
+void MyGame::start()
+{
+	stopped = false;
+}
+
+void MyGame::changeColor(Color col)
+{
+	this->character->changeColor(col);
 }
 
 

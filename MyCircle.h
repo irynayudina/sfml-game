@@ -5,12 +5,13 @@ class MyCircle : public MyShape
 {
 private:
 	//***********************************variables
-	CircleShape* circle;
+	
 	float radius;
 	Color color;
 	float x;
 	float y;
 public:
+	CircleShape* circle;
 	//***********************************constructors
 	MyCircle(float radius, Color color);
 	~MyCircle();
