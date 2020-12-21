@@ -9,6 +9,10 @@ MyEnvironmentCircle::MyEnvironmentCircle(float radius, Color color_inner, Color 
 	this->inner_circle = new MyCircle((this->radius) - (this->radius) / 10, this->color_inner);
 }
 
+MyEnvironmentCircle::MyEnvironmentCircle()
+{
+}
+
 MyEnvironmentCircle::~MyEnvironmentCircle()
 {
 	delete this->inner_circle;
@@ -20,7 +24,7 @@ void MyEnvironmentCircle::SetPosition(float x, float y)
 	this->x = x;
 	this->y = y;
 	this->outer_circle->SetPosition(this->x, this->y);
-	this->inner_circle->SetPosition(this->x, this->y);
+	this->inner_circle->SetPosition(this->x + (this->radius) / 10, this->y + (this->radius) / 10);
 }
 
 void MyEnvironmentCircle::changeColor(Color color)

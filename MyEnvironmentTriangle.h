@@ -12,8 +12,10 @@ private:
 	float y;
 public:
 	MyEnvironmentTriangle(float radius, Color color_inner, Color color_outer);
+	MyEnvironmentTriangle();
 	~MyEnvironmentTriangle();
 	void SetPosition(float x, float y);
+	int getX();
 	void changeColor(Color color);
 	void DRAW(RenderWindow* WINDOW);
 };

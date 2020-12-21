@@ -12,6 +12,7 @@ private:
 	float y;
 public:
 	MyEnvironmentCircle(float radius, Color color_inner, Color color_outer);
+	MyEnvironmentCircle();
 	~MyEnvironmentCircle();
 	void SetPosition(float x, float y);
 	void changeColor(Color color);

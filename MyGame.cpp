@@ -1,8 +1,4 @@
 #include "MyGame.h"
-//purple lines
-//163, 73, 164 better
-//light filling
-//234, 189, 234
 //****************************************************private functions
 void MyGame::InitVariables()
 {
@@ -12,17 +8,17 @@ void MyGame::InitVariables()
 	this->maxEnemies = 5;
 
 	
-	this->gap_between_environment_elements = 170;
-	this->size_of_environment_elements = 80;
-	this->padding = 85;
+	this->gap_between_environment_elements = 100;
+	this->size_of_environment_elements = 60;
+	this->padding = 25;
 	this->background_color = new Color(0,0,0);
 	this->objects_color = new Color(163, 73, 164);
 	this->rows_of_env_elem = 3;
 }
 void MyGame::InitWindow()
 {
-	this->videoMode.height = 750;
-	this->videoMode.width = 1500;
+	this->videoMode.height = 900;
+	this->videoMode.width = 1900;
 	this->window = new RenderWindow(this->videoMode, "Lesson 1", Style::Titlebar | Style::Close);
 	this->window->setFramerateLimit(30);
 }
@@ -42,6 +38,8 @@ MyGame::MyGame()
 	this->InitWindow();
 	this->initCircle();
 	this->initTriangle();
+	this->initColorButton();
+	this->initControlButton();
 	this->initEnemies();
 }
 MyGame::~MyGame() 
@@ -79,12 +77,6 @@ void MyGame::pollEvents()
 
 void MyGame::uppdateMousePositions()
 {
-	/*
-	uppdates the mouse position
-	mouse position relative to window(vector2i)
-	
-
-	*/
 	this->mousePosWindow = Mouse::getPosition(*this->window);
 	this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
 	std::cout << "Mouse position: " << this->mousePosWindow.x << " " << this->mousePosWindow.y << "\n";
@@ -92,29 +84,14 @@ void MyGame::uppdateMousePositions()
 
 void MyGame::spawnEnemy()
 {
-	/*
-		spawn enemies and set their colors and positions
-		sets a random position
-		sets a random color
-		adds enemy to the vector
-	*/
 	this->enemy.setPosition(static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy.getSize().x)),
 							static_cast<float>(rand() % static_cast<int>(this->window->getSize().y - this->enemy.getSize().y)));
 	this->enemy.setFillColor(Color::Green);
-	//spawn the enemy
 	this->enemies.push_back(this->enemy);
-
-	//remove enemies at the end of screen
 }
 
 void MyGame::uppdateEnemies()
 {
-	/*
-	uppdates the enmy spawn timer and spawns the enemy
-	when total amount of enemies is less than the max
-	moves enemies downwords
-	removes the enemies from the age of the screen TODO
-	*/
 	if (this->enemies.size() < this->maxEnemies) {
 		if (this->enemySpawnTimer >= this->enemySpawnTimerMax) {
 			this->spawnEnemy();
@@ -122,20 +99,14 @@ void MyGame::uppdateEnemies()
 		}
 		else this->enemySpawnTimer += 1.f;
 	}
-	//move the enemies
-	/*for (auto& e : this->enemies) {
-		e.move(0.f, 5.f);
-	}*/
 	for (int i = 0; i < this->enemies.size(); i++){
 		bool deleted = false;
 		this->enemies[i].move(0.f, 5.f);
-		//check if clicked
 		if (Mouse::isButtonPressed(Mouse::Left)) {
 			if (this->enemies[i].getGlobalBounds().contains(this->mousePosView)) {
 				this->enemies.erase(this->enemies.begin() + i);
 			}
 		}
-		//if the enemy has passed the bottom of the window, delete the enemy
 		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
 			deleted = true;
 		}
@@ -148,7 +119,6 @@ void MyGame::uppdateEnemies()
 
 void MyGame::renderEnemies()
 {
-	//rendering all the enemies
 	for (auto& e : this->enemies) {
 		this->window->draw(e);
 	}
@@ -160,34 +130,35 @@ void MyGame::uppdate()
 	this->uppdateMousePositions();
 	this->initCircles();
 	this->initTriangles();
+	this->initColorButtons();
+	this->initControlButtons();
 	this->uppdateEnemies();
-	//update mouse position
-	//relative to the screen
-	//std::cout << "Mouse position: " << Mouse::getPosition().x << " " << Mouse::getPosition().y << "\n";
-	//relative to the window
-	//std::cout << "Mouse position: " << Mouse::getPosition(*this->window).x << " " << Mouse::getPosition(*this->window).y << "\n";
+	this->makeText();
+	this->makeText_color();
+	this->makeText_color();
 }
 void MyGame::render()
 {
-	/*
-	* clear old frame
-	* render objects
-	* display frame in window
-	renders the game objects
-	*/
-	this->window->clear(Color(126, 40, 127, 255));
-	
+	this->window->clear(Color::Black);
 	//draw here
+	
 	this->draw_circles();
 	this->draw_triangles();
 	this->renderEnemies();
+	this->drawColorButtons();
+	this->drawControlButtons();
+	this->drawText();
+	this->drawText_color();
+	this->drawText_start();
+	this->drawText_stop();
+	this->drawText_restart();
 
 	this->window->display();
 }
 
 void MyGame::initTriangle()
 {
-	this->tr = new MyEnvironmentTriangle(80.f, *this->background_color, *this->objects_color);
+	this->tr = new MyEnvironmentTriangle(this->size_of_environment_elements, *this->background_color, *this->objects_color);
 }
 void MyGame::initTriangles()
 {
@@ -198,13 +169,13 @@ void MyGame::initTriangles()
 		c % 2 ? r = 1 : r = 0;
 		float xpos;
 		float ypos;
-		xpos = this->padding + r * (this->gap_between_environment_elements + this->size_of_environment_elements) + (i % this->rows_of_env_elem) * (this->gap_between_environment_elements + this->size_of_environment_elements);
+		xpos = this->padding + r * (this->gap_between_environment_elements + (this->size_of_environment_elements*2)) + (i % this->rows_of_env_elem) * (this->gap_between_environment_elements*2 + this->size_of_environment_elements*4);
 		ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements);
+		this->tr = new MyEnvironmentTriangle(this->size_of_environment_elements, *this->background_color, *this->objects_color);
 		this->tr->SetPosition(xpos, ypos);
 		this->tr->changeColor(*this->objects_color);
-		this->environment_triangles.insert(this->environment_triangles.end(), *this->tr);
+		environment_triangles[i] = *this->tr;
 	}
-	//delete this->tr;
 }
 
 void MyGame::draw_triangles()
@@ -216,7 +187,7 @@ void MyGame::draw_triangles()
 
 void MyGame::initCircle()
 {
-	this->cir = new MyEnvironmentCircle(80.f, *this->background_color, *this->objects_color);
+	this->cir = new MyEnvironmentCircle(this->size_of_environment_elements, *this->objects_color, *this->objects_color);
 }
 
 void MyGame::initCircles()
@@ -229,13 +200,12 @@ void MyGame::initCircles()
 		c % 2 ? r = 0 : r = 1;
 		float xpos;
 		float ypos;
-		xpos = this->padding + r * (this->gap_between_environment_elements + this->size_of_environment_elements) + (i % this->rows_of_env_elem) * (this->gap_between_environment_elements + this->size_of_environment_elements) + this->size_of_environment_elements;
-		ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements) + this->size_of_environment_elements;
-		this->cir = new MyEnvironmentCircle(80.f, *this->background_color, *this->objects_color);
+		xpos = this->padding + r * (this->gap_between_environment_elements + (this->size_of_environment_elements * 2)) + (i % this->rows_of_env_elem) * (this->gap_between_environment_elements * 2 + this->size_of_environment_elements * 4);
+		ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements);
+		this->cir = new MyEnvironmentCircle(this->size_of_environment_elements, *this->background_color , *this->objects_color);
 		this->cir->SetPosition(xpos, ypos);
 		this->cir->changeColor(*this->objects_color);
-		//ypos = this->padding + c * (this->gap_between_environment_elements + this->size_of_environment_elements) + this->size_of_environment_elements;
-		this->environment_circles.insert(this->environment_circles.end(), *this->cir);
+		environment_circles[i] = *this->cir;
 	}
 }
 
@@ -246,3 +216,229 @@ void MyGame::draw_circles()
 		t.DRAW(this->window);
 	}
 }
+
+void MyGame::initColorButton()
+{
+	this->colorb = new MyButton(this->size_of_environment_elements * 2, this->size_of_environment_elements / 3, *this->objects_color, *this->background_color);
+}
+
+void MyGame::initColorButtons()
+{
+	for (int i = 0; i < 5; i++) {
+		float xpos;
+		float ypos;
+		xpos = this->padding + i * (this->size_of_environment_elements * 2 + this->size_of_environment_elements / 3);
+		ypos = (this->gap_between_environment_elements + this->size_of_environment_elements) * 4 - this->size_of_environment_elements +32 * 2;
+		this->colorb->SetPosition(xpos, ypos);
+		switch (i)
+		{
+		case 0:
+			this->colorb->ChangeColor(Color(163, 73, 164));
+			break;
+		case 1:
+			this->colorb->ChangeColor(Color(128, 39, 248));
+			break;
+		case 2:
+			this->colorb->ChangeColor(Color(218, 3, 197));
+			break;
+		case 3:
+			this->colorb->ChangeColor(Color(255, 19, 96));
+			break;
+		case 4:
+			this->colorb->ChangeColor(Color(234, 189, 234));
+			break;
+		}
+		color_buttons[i] = *this->colorb;
+	}
+}
+
+void MyGame::drawColorButtons()
+{
+	for (auto& t : this->color_buttons) {
+		t.DRAW(this->window);
+	}
+}
+
+void MyGame::initControlButton()
+{
+	this->controlb = new MyButton(this->size_of_environment_elements * 5 + this->size_of_environment_elements / 2, this->size_of_environment_elements / 2, *this->objects_color, *this->background_color);
+}
+
+void MyGame::initControlButtons()
+{
+	for (int i = 0; i < 3; i++) {
+		float xpos;
+		float ypos;
+		xpos = this->padding + i * (this->size_of_environment_elements * 5 + this->size_of_environment_elements);
+		ypos = this->color_buttons[2].getY() + this->size_of_environment_elements / 3;
+		this->controlb->SetPosition(xpos, ypos);
+		switch (i)
+		{
+		case 0:
+			makeText_start(xpos, ypos+(this->size_of_environment_elements / 2)*4);
+			break;
+		case 1:
+			makeText_stop(xpos, ypos + (this->size_of_environment_elements / 2) * 4);
+			break;
+		case 2:
+			makeText_restart(xpos, ypos + (this->size_of_environment_elements / 2) * 4);
+			break;
+		}
+		this->control_buttons[i] = *this->controlb;
+
+	}
+}
+
+void MyGame::drawControlButtons()
+{
+	for (auto& t : this->control_buttons) {
+		t.DRAW(this->window);
+	}
+}
+
+void MyGame::makeText()
+{
+	if (!this->font.loadFromFile("Sansation-LightItalic.ttf"))//Pacifico
+	{
+
+		throw("file was not loaded");
+		// error...
+	}
+	text.setFont(font); // font is a sf::Font
+
+   // set the string to display
+	text.setString("left-click on any point within the \nprogram window, \nthis will set moving trajectory \nof the character\n");
+
+	// set the character size
+	text.setCharacterSize(32); // in pixels, not points!
+
+	// set the color
+	text.setFillColor(Color(163, 73, 164));
+
+	// set the text style
+	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text.setPosition((this->padding + (this->rows_of_env_elem) * (this->gap_between_environment_elements * 2 + this->size_of_environment_elements * 4)), this->padding);
+}
+
+void MyGame::drawText()
+{
+	window->draw(text);
+}
+
+void MyGame::makeText_start(float x, float y)
+{
+	if (!this->font.loadFromFile("Sansation-LightItalic.ttf"))//Pacifico
+	{
+
+		throw("file was not loaded");
+		// error...
+	}
+	text_start.setFont(font); // font is a sf::Font
+
+   // set the string to display
+	text_start.setString("start");
+
+	// set the character size
+	text_start.setCharacterSize(32); // in pixels, not points!
+
+	// set the color
+	text_start.setFillColor(Color(163, 73, 164));
+
+	// set the text style
+	//text_start.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text_start.setPosition(x, y);
+}
+
+void MyGame::drawText_start()
+{
+	window->draw(text_start);
+}
+
+void MyGame::makeText_stop(float x, float y)
+{
+	if (!this->font.loadFromFile("Sansation-LightItalic.ttf"))
+	{
+
+		throw("file was not loaded");
+		// error...
+	}
+	text_stop.setFont(font); // font is a sf::Font
+
+   // set the string to display
+	text_stop.setString("stop");
+
+	// set the character size
+	text_stop.setCharacterSize(32); // in pixels, not points!
+
+	// set the color
+	text_stop.setFillColor(Color(163, 73, 164));
+
+	// set the text style
+	//text_stop.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text_stop.setPosition(x, y);
+}
+
+void MyGame::drawText_stop()
+{
+	window->draw(text_stop);
+}
+
+void MyGame::makeText_restart(float x, float y)
+{
+	if (!this->font.loadFromFile("Sansation-LightItalic.ttf"))
+	{
+
+		throw("file was not loaded");
+		// error...
+	}
+	text_restart.setFont(font); // font is a sf::Font
+
+   // set the string to display
+	text_restart.setString("restart");
+
+	// set the character size
+	text_restart.setCharacterSize(32); // in pixels, not points!
+
+	// set the color
+	text_restart.setFillColor(Color(163, 73, 164));
+
+	// set the text style
+	//text_restart.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text_restart.setPosition(x, y);
+}
+
+void MyGame::drawText_restart()
+{
+	window->draw(text_restart);
+}
+
+void MyGame::makeText_color()
+{
+	if (!this->font.loadFromFile("Sansation-LightItalic.ttf"))
+	{
+
+		throw("file was not loaded");
+		// error...
+	}
+	text_color.setFont(font); // font is a sf::Font
+
+   // set the string to display
+	text_color.setString("change the color of the main character");
+
+	// set the character size
+	text_color.setCharacterSize(32); // in pixels, not points!
+
+	// set the color
+	text_color.setFillColor(Color(163, 73, 164));
+
+	// set the text style
+	//text_color.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	text_color.setPosition(this->padding, (this->gap_between_environment_elements + this->size_of_environment_elements)*4- this->size_of_environment_elements);
+}
+
+void MyGame::drawText_color()
+{
+	window->draw(text_color);
+}
+
+

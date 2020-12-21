@@ -41,15 +41,21 @@ private:
 
 
 	//***********************************************environment objects
-	std::vector<MyEnvironmentTriangle> environment_triangles;
+	MyEnvironmentTriangle environment_triangles[9];//std::vector<MyEnvironmentTriangle> environment_triangles;
 	MyEnvironmentTriangle* tr;// (float, *this->background_color, *this->objects_color);
-	std::vector<MyEnvironmentCircle> environment_circles;
+	MyEnvironmentCircle environment_circles[9];//std::vector<MyEnvironmentCircle> environment_circles;
 	MyEnvironmentCircle* cir;
 	//***********************************************menu and control objects
-	std::vector<MyButton> color_buttons;
-	MyButton* start_char;
-	MyButton* stop_char;
-	MyButton* restart_char;
+	sf::Font font;
+	sf::Text text;
+	sf::Text text_start;
+	sf::Text text_stop;
+	sf::Text text_restart;
+	sf::Text text_color;
+	MyButton color_buttons[5];
+	MyButton* colorb;
+	MyButton control_buttons[3];
+	MyButton* controlb;
 	//***********************************************the main character objects
 	MyCharacter* charecter;
 
@@ -95,7 +101,23 @@ public:
 	void initCircles();// puts equal custom circles to vector sets position in the screen of each element in the vector
 	void draw_circles();//draws to the screen renders
 
-
+	void initColorButton();
+	void initColorButtons();
+	void drawColorButtons();
+	void initControlButton();
+	void initControlButtons();
+	void drawControlButtons();
+//***************************************************************************************environment
+	void makeText();
+	void drawText();
+	void makeText_start(float x, float y);
+	void drawText_start();
+	void makeText_stop(float x, float y);
+	void drawText_stop();
+	void makeText_restart(float x, float y);
+	void drawText_restart();
+	void makeText_color();
+	void drawText_color();
 //***************************************************************************************button functions
 	void change_color_onclick();
 	void start_onclick();

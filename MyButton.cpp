@@ -11,6 +11,10 @@
 	 this->inner_rectangle = new MyRectangle((this->width) - (this->width) / 10, (this->height) - (this->width) / 10, this->color_inner);
  }
 
+ MyButton::MyButton()
+ {
+ }
+
  MyButton::~ MyButton()
 {
 	 delete this->inner_rectangle;
@@ -23,6 +27,22 @@
 	 this->y = y;
 	 this->inner_rectangle->SetPosition((this->x) + (this->height) / 20, (this->y) + (this->height) / 20); 
 	 this->outer_rectangle->SetPosition(this->x, this->y);
+ }
+
+ float MyButton::getY()
+ {
+	 return this->y;
+ }
+
+ void MyButton::ChangeColor(Color color)
+ {
+	 this->color_inner = color;
+	 this->inner_rectangle->changeColor(this->color_inner);
+ }
+
+ Color MyButton::getColor()
+ {
+	 return color_inner;
  }
 
  void MyButton::DRAW(RenderWindow* WINDOW)
