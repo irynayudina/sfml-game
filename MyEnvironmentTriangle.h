@@ -3,7 +3,7 @@
 class MyEnvironmentTriangle
 {
 private:
-	MyTriangle* outer_triangle;
+	
 	MyTriangle* inner_triangle;
 	float radius;
 	Color color_inner;
@@ -11,6 +11,7 @@ private:
 	float x;
 	float y;
 public:
+	MyTriangle* outer_triangle;
 	MyEnvironmentTriangle(float radius, Color color_inner, Color color_outer);
 	MyEnvironmentTriangle();
 	~MyEnvironmentTriangle();

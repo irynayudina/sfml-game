@@ -169,8 +169,9 @@ void MyGame::uppdate()
 
 		this->moveChar();
 		this->deformChar();
+		this->uppdateEnemies();
 	}
-	this->uppdateEnemies();////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	this->makeText();
 	this->makeText_color();
 }
@@ -650,6 +651,13 @@ void MyGame::move1(float& xcord, float& ycord)
 
 void MyGame::deformChar()
 {
+	for (int i = 0; i < 9; i++) {
+		if (this->environment_triangles[i].outer_triangle->triangle->getGlobalBounds().contains(Vector2f(this->character->x, this->character->y))) {
+
+			this->character->deform();
+		}
+			
+	}
 }
 
 void MyGame::drawChar()
@@ -659,8 +667,7 @@ void MyGame::drawChar()
 
 void MyGame::restart()
 {
-	/*this->character_reserved->changeColor(Color(character_reserved->GetColor().r, character_reserved->GetColor().g, character_reserved->GetColor().b, 255));
-	this->character->DeepCopy(*this->character_reserved);*/
+	window->close();
 }
 
 void MyGame::stop()
