@@ -3,9 +3,9 @@
 void MyGame::InitVariables()
 {
 	this->window = nullptr;
-	this->enemySpawnTimerMax = 10.f;
-	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 5;
+	this->enemySpawnTimerMax = 10.f;////////////////////////////////////////////////////////////////////////////
+	this->enemySpawnTimer = this->enemySpawnTimerMax;//////////////////////////////////////////////////////////
+	this->maxEnemies = 5;//////////////////////////////////////////////////////////////////////////////////////
 
 	
 	this->gap_between_environment_elements = 100;
@@ -22,7 +22,7 @@ void MyGame::InitWindow()
 	this->window = new RenderWindow(this->videoMode, "Lesson 1", Style::Titlebar | Style::Close);
 	this->window->setFramerateLimit(30);
 }
-void MyGame::initEnemies()
+void MyGame::initEnemies()////////////////////////////////////////////////////////////////////////////////////////////////////
 {
 	this->enemy.setPosition(20.f, 20.f);
 	this->enemy.setSize(Vector2f(100.f, 100.f));
@@ -82,7 +82,7 @@ void MyGame::uppdateMousePositions()
 	std::cout << "Mouse position: " << this->mousePosWindow.x << " " << this->mousePosWindow.y << "\n";
 }
 
-void MyGame::spawnEnemy()
+void MyGame::spawnEnemy()/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 {
 	this->enemy.setPosition(static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy.getSize().x)),
 							static_cast<float>(rand() % static_cast<int>(this->window->getSize().y - this->enemy.getSize().y)));
@@ -90,7 +90,7 @@ void MyGame::spawnEnemy()
 	this->enemies.push_back(this->enemy);
 }
 
-void MyGame::uppdateEnemies()
+void MyGame::uppdateEnemies()/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 {
 	if (this->enemies.size() < this->maxEnemies) {
 		if (this->enemySpawnTimer >= this->enemySpawnTimerMax) {
@@ -117,7 +117,7 @@ void MyGame::uppdateEnemies()
 	}
 }
 
-void MyGame::renderEnemies()
+void MyGame::renderEnemies()////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 {
 	for (auto& e : this->enemies) {
 		this->window->draw(e);
@@ -132,9 +132,8 @@ void MyGame::uppdate()
 	this->initTriangles();
 	this->initColorButtons();
 	this->initControlButtons();
-	this->uppdateEnemies();
+	this->uppdateEnemies();////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	this->makeText();
-	this->makeText_color();
 	this->makeText_color();
 }
 void MyGame::render()
@@ -144,7 +143,7 @@ void MyGame::render()
 	
 	this->draw_circles();
 	this->draw_triangles();
-	this->renderEnemies();
+	this->renderEnemies();///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	this->drawColorButtons();
 	this->drawControlButtons();
 	this->drawText();
@@ -219,7 +218,7 @@ void MyGame::draw_circles()
 
 void MyGame::initColorButton()
 {
-	this->colorb = new MyButton(this->size_of_environment_elements * 2, this->size_of_environment_elements / 3, *this->objects_color, *this->background_color);
+	this->colorb = new MyButton(100, 30, Color(255, 174, 201), *this->background_color);
 }
 
 void MyGame::initColorButtons()
@@ -227,8 +226,9 @@ void MyGame::initColorButtons()
 	for (int i = 0; i < 5; i++) {
 		float xpos;
 		float ypos;
-		xpos = this->padding + i * (this->size_of_environment_elements * 2 + this->size_of_environment_elements / 3);
-		ypos = (this->gap_between_environment_elements + this->size_of_environment_elements) * 4 - this->size_of_environment_elements +32 * 2;
+		xpos = this->padding + i * 130;
+		ypos = 650;
+		this->colorb = new MyButton(100, 30, Color(255, 174, 201), *this->background_color);
 		this->colorb->SetPosition(xpos, ypos);
 		switch (i)
 		{
@@ -261,7 +261,7 @@ void MyGame::drawColorButtons()
 
 void MyGame::initControlButton()
 {
-	this->controlb = new MyButton(this->size_of_environment_elements * 5 + this->size_of_environment_elements / 2, this->size_of_environment_elements / 2, *this->objects_color, *this->background_color);
+	this->controlb = new MyButton(200, 75, Color(255, 174, 201), *this->background_color);
 }
 
 void MyGame::initControlButtons()
@@ -269,19 +269,20 @@ void MyGame::initControlButtons()
 	for (int i = 0; i < 3; i++) {
 		float xpos;
 		float ypos;
-		xpos = this->padding + i * (this->size_of_environment_elements * 5 + this->size_of_environment_elements);
-		ypos = this->color_buttons[2].getY() + this->size_of_environment_elements / 3;
+		xpos = this->padding + i * 275;
+		ypos = 750;
+		this->controlb = new MyButton(200, 75, Color(255, 174, 201), *this->background_color);
 		this->controlb->SetPosition(xpos, ypos);
 		switch (i)
 		{
 		case 0:
-			makeText_start(xpos, ypos+(this->size_of_environment_elements / 2)*4);
+			makeText_start(xpos+10, ypos);
 			break;
 		case 1:
-			makeText_stop(xpos, ypos + (this->size_of_environment_elements / 2) * 4);
+			makeText_stop(xpos+10, ypos);
 			break;
 		case 2:
-			makeText_restart(xpos, ypos + (this->size_of_environment_elements / 2) * 4);
+			makeText_restart(xpos+10, ypos);
 			break;
 		}
 		this->control_buttons[i] = *this->controlb;

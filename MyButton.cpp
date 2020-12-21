@@ -25,8 +25,8 @@
  {
 	 this->x = x;
 	 this->y = y;
-	 this->inner_rectangle->SetPosition((this->x) + (this->height) / 20, (this->y) + (this->height) / 20); 
 	 this->outer_rectangle->SetPosition(this->x, this->y);
+	 this->inner_rectangle->SetPosition((this->x) + (this->height) / 20, (this->y) + (this->height) / 20);
  }
 
  float MyButton::getY()
